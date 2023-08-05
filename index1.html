@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real-time MySQL Database with WebSocket</title>
+</head>
+<body>
+  <div id="realtime-data"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3000');
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      // Update the frontend with the received real-time data
+      document.getElementById('realtime-data').innerText = JSON.stringify(data, null, 2);
+    };
+  </script>
+</body>
+</html>

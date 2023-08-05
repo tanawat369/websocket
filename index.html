@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real-time MySQL Data</title>
+</head>
+<body>
+  <h1>Real-time MySQL Data</h1>
+  <p id="message"></p>
+  <p id="timestamp"></p>
+
+  <form action="/view" method="POST">
+    <fieldset>
+      <h3>View Database</h3>
+      <label>Column</label>
+      <input type="text" id="Column" name="Column" required>
+      <label>where</label>
+      <input type="text" id="where" name="where" required>
+      <br><br>
+      <button type ="reset">Reset</button>
+      <button type ="submit">Submit</button>
+      <br><br><br>
+    </fieldset>
+   </form>
+   <p>Event DateandTime</p>
+   <p id="mydata1"></p>
+   <p>Event all</p>
+   <p id="data-list2"></p>
+  
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const dataList = document.getElementById('data-list2');
+
+    socket.on('data', (data) => {
+      updateDataList(data);
+    });
+
+    function updateDataList(data) {
+      dataList.innerHTML = ''; // Clear previous dataฟ
+      data.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.textContent = JSON.stringify(item);
+        dataList.appendChild(listItem);
+      });
+    }
+  </script>
+<script>
+  // const socket1 = io();
+
+  // socket1.on('mydata',(data)=>{
+  //   document.getElementById('mydata').textContent=data.message;
+  // })
+
+  // function updateDataList1(mydata) {
+  //   dataList1.innerHTML = ''; // Clear previous dataฟ
+  //   mydata.forEach(item => {
+  //     const listItem = document.createElement('li');
+  //     listItem.textContent = JSON.stringify(item);
+  //     dataList1.appendChild(listItem);
+  //   });
+  // }
+
+  const socket1 = io(); // Connect to the server
+
+    // Function to handle received data from the server
+    function handleData(mydata) {
+      document.getElementById('message').textContent = mydata.message;
+      document.getElementById('timestamp').textContent = new Date(mydata.timestamp).toLocaleString();
+    }
+
+    // Listen for the 'data' event from the server
+    socket1.on('mydata', handleData);
+</script>
+
+<script>
+  const socket2 = io()
+  // function handleData(mydata1) {
+  //     document.getElementById('mydata1').textContent = mydata1.message;
+  //   }
+  //   socket1.on('mydata1', handleData);
+  socket.on('mydata1',(mydata1)=>{
+    document.getElementById('mydata1').textContent= mydata1.message
+  })
+</script>
+</body>
+</html>
